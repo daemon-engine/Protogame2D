@@ -83,7 +83,7 @@ void Game::Render() const
 //----------------------------------------------------------------------------------------------------
 /// @brief Get current game state
 /// @return current game state
-///
+//----------------------------------------------------------------------------------------------------
 eGameState Game::GetGameState() const
 {
     return m_gameState;
@@ -214,9 +214,8 @@ void Game::UpdateWindow() const
 }
 
 //----------------------------------------------------------------------------------------------------
-///
 /// @brief Render a simple outlined disc 2D in ATTRACT state.
-//
+//----------------------------------------------------------------------------------------------------
 void Game::RenderAttract() const
 {
     Vec2 const clientDimensions = Window::s_mainWindow->GetClientDimensions();
@@ -236,9 +235,8 @@ void Game::RenderAttract() const
 }
 
 //----------------------------------------------------------------------------------------------------
-///
 /// @brief Render two line segments 2D in GAME state.
-//
+//----------------------------------------------------------------------------------------------------
 void Game::RenderGame() const
 {
     Vec2 const clientDimensions = Window::s_mainWindow->GetClientDimensions();
