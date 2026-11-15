@@ -318,7 +318,6 @@
   <!-- //////////////////////////////////////////////////////////////////////////////////////////////// -->
   <ItemGroup>
     <ClCompile Include="Framework/App.cpp" />
-    <ClCompile Include="Framework/GameCommon.cpp" />
     <ClCompile Include="Framework/Main_Windows.cpp" />
     <ClCompile Include="Gameplay/Game.cpp" />
   </ItemGroup>

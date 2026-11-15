@@ -16,9 +16,6 @@
     <ClCompile Include="Framework/App.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
-    <ClCompile Include="Framework/GameCommon.cpp">
-      <Filter>Framework</Filter>
-    </ClCompile>
     <ClCompile Include="Framework/Main_Windows.cpp">
       <Filter>Framework</Filter>
     </ClCompile>

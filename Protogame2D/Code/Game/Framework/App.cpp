@@ -71,7 +71,6 @@ void App::RunMainLoop()
     // Program main loop; keep running frames until it's time to quit
     while (!m_isQuitting)
     {
-        // Sleep(16); // Temporary code to "slow down" our app to ~60Hz until we have proper frame timing in
         RunFrame();
     }
 }
@@ -124,11 +123,7 @@ void App::Update()
 }
 
 //----------------------------------------------------------------------------------------------------
-// Some simple OpenGL example drawing code.
-// This is the graphical equivalent of printing "Hello, world."
-//
-// Ultimately this function (App::Render) will only call methods on Renderer (like Renderer::DrawVertexArray)
-//	to draw things, never calling OpenGL (nor DirectX) functions directly.
+// Draws through Renderer only; never calls DirectX directly.
 //
 void App::Render() const
 {
