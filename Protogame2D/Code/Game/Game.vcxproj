@@ -352,6 +352,6 @@
     <Message Text="Building $(ProjectName) Game Application - Configuration | $(Configuration), Platform | $(Platform)" Importance="high" />
     <Message Text="Output: $(TargetPath)" Importance="normal" />
     <Message Text="Working Directory: $(LocalDebuggerWorkingDirectory)" Importance="normal" />
-    <Message Text="V8 Runtime will be deployed from: $(V8RedistLibPath)" Importance="normal" />
+    <Message Condition="'$(EnableScriptModule)'=='true'" Text="V8 Runtime will be deployed from: $(V8RedistLibPath)" Importance="normal" />
   </Target>
 </Project>
