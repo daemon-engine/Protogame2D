@@ -345,6 +345,13 @@
   <!-- MSBuild Target and Build Validation -->
   <!-- //////////////////////////////////////////////////////////////////////////////////////////////// -->
   <Import Project="$(VCTargetsPath)/Microsoft.Cpp.targets" />
+  <!-- Debugging: run the deployed executable from Run/ so Data/ assets resolve (all configurations).
+       Defined after Microsoft.Cpp.targets, which otherwise resets LocalDebuggerCommand to $(TargetPath). -->
+  <PropertyGroup>
+    <LocalDebuggerCommand>$(TargetFileName)</LocalDebuggerCommand>
+    <LocalDebuggerWorkingDirectory>$(SolutionDir)Run/</LocalDebuggerWorkingDirectory>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <!-- Custom Build Information Target -->
