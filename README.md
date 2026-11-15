@@ -25,43 +25,44 @@
 
 ## Overview
 
-Protogame2D is a starter template for building 2D games on the custom [Daemon Engine](https://github.com/dadavidtseng/Engine). It provides a clean, minimal scaffold with an application lifecycle, a two-state game state machine (Attract → Game), an orthographic camera, event-driven state transitions with audio feedback, and built-in debug tools (FPS counter, pause, slow-mo, single-frame step).
+Protogame2D is a starter template for building 2D games on the custom [Daemon Engine](https://github.com/daemon-engine/DaemonEngine) ([documentation](https://daemonengine.dadavidtseng.com)). It provides a clean, minimal scaffold with an application lifecycle, a two-state game state machine (Attract → Game), an orthographic camera, event-driven state transitions with audio feedback, and built-in debug tools (FPS counter, pause, slow-mo, single-frame step).
 
-Designed as a boilerplate that can be cloned and extended into a full game project. The V8 scripting subsystem is disabled by default via `EngineBuildPreferences.hpp` to keep the build lightweight.
+Designed as a boilerplate that can be cloned and extended into a full game project. The V8 scripting subsystem is disabled by default via `EngineBuildPreferences.hpp` to keep the build lightweight; without it, the project needs neither V8 nor OpenSSL and builds for both x64 and x86.
 
 ## Features
 
 - **Game state machine** — Event-driven Attract ↔ Game transitions with `OnGameStateChanged` callbacks and audio cues
 - **2D orthographic rendering** — Screen-space camera with `VertexList_PCU` immediate-mode drawing (disc, line segments)
-- **Debug tools** — Real-time FPS/time/scale HUD, pause (P), single-frame step (O), slow-mo at 0.1× (T hold)
-- **Window management** — Fullscreen stretch toggle (R), dynamic client dimension tracking
+- **Debug tools** — Real-time FPS/time/scale HUD, pause (P), single-frame step (O), slow-mo at 0.1× (T hold), developer console (~)
+- **Window management** — Windowed ↔ fullscreen toggle (R); the screen camera follows the new window size
 - **Structured logging** — `DAEMON_LOG` macro with verbosity levels for lifecycle tracing
 
 ## How to Install
 
 ### Prerequisites
 
-- Visual Studio 2022 (or 2019) with C++ desktop development workload
-- Windows 10/11 (x64)
+- Visual Studio 2022 or later with the C++ desktop development workload (the project uses the v143 toolset)
+- Windows 10/11 (x64 or x86)
 - DirectX 11 compatible GPU
-- [Daemon Engine](https://github.com/dadavidtseng/Engine) cloned as a sibling directory
 
 ### Build
 
-```bash
-# Clone both repos side by side
-git clone https://github.com/dadavidtseng/Engine.git
-git clone https://github.com/dadavidtseng/Protogame2D.git
+The engine is included as the `Engine/` Git submodule, so clone recursively:
 
-# Directory layout should be:
-# ├── Engine/
-# └── Protogame2D/
+```bash
+git clone --recursive https://github.com/daemon-engine/Protogame2D.git
 ```
 
-1. Open `Protogame2D.sln` in Visual Studio
-2. Set configuration to `Debug | x64`
+If you already cloned without `--recursive`, fetch the engine with:
+
+```bash
+git submodule update --init
+```
+
+1. Open `Protogame2D/Protogame2D.sln` in Visual Studio
+2. Choose a configuration: `Debug` or `Release`, `x64` or `x86`
 3. Build the solution (the Engine project is referenced automatically)
-4. The executable is deployed to `Run/` via post-build event
+4. The executable is deployed to `Protogame2D/Run/` via post-build event
 
 ## How to Use
 
@@ -71,8 +72,8 @@ git clone https://github.com/dadavidtseng/Protogame2D.git
 |--------|-----|
 | Start game | Space |
 | Return to attract / Quit | ESC |
-| Fullscreen toggle | R |
-| Restart game | F8 |
+| Toggle windowed / fullscreen | R |
+| Restart game (in game) | F8 |
 
 ### Debug Controls
 
@@ -81,41 +82,46 @@ git clone https://github.com/dadavidtseng/Protogame2D.git
 | Pause / Unpause | P |
 | Step single frame | O |
 | Slow-mo (0.1×) | T (hold) |
+| Developer console | ~ |
 
 ### Running
 
-Launch `Run/Protogame2D_Debug_x64.exe` from the `Run/` directory (working directory must be `Run/` for asset loading).
+Press F5 in Visual Studio; the project already starts the game with `Run/` as its working directory. To launch it directly, run `Protogame2D_<Configuration>_<Platform>.exe` (for example `Protogame2D_Debug_x64.exe`) from `Protogame2D/Run/` — the working directory must be `Run/` for asset loading.
 
 ## Project Structure
 
 ```
-Protogame2D/
-├── Code/Game/
-│   ├── Framework/                 # Application framework
-│   │   ├── Main_Windows.cpp       # WinMain entry point
-│   │   ├── App                    # Application lifecycle (Startup → RunMainLoop → Shutdown)
-│   │   └── GameCommon             # Global pointers, GAME_SAFE_RELEASE
-│   ├── Gameplay/                  # Game logic
-│   │   └── Game                   # State machine (Attract ↔ Game), rendering, time controls
-│   └── EngineBuildPreferences.hpp # Engine feature toggles (V8 scripting disabled)
-├── Run/                           # Runtime directory
-│   ├── Data/Audio/                # Sound effects (TestSound.mp3)
-│   ├── Data/Fonts/                # Bitmap fonts
-│   └── Data/Shaders/              # HLSL shaders (Default)
-├── Docs/                          # Documentation
-└── Protogame2D.sln                # Visual Studio solution
+Protogame2D/                           # Repository root
+├── Engine/                            # Daemon Engine (Git submodule)
+├── Protogame2D/
+│   ├── Code/Game/
+│   │   ├── Framework/                 # Application framework
+│   │   │   ├── Main_Windows.cpp       # WinMain entry point
+│   │   │   ├── App                    # Application lifecycle (Startup → RunMainLoop → Shutdown)
+│   │   │   └── GameCommon             # Global pointers, GAME_SAFE_RELEASE
+│   │   ├── Gameplay/                  # Game logic
+│   │   │   └── Game                   # State machine (Attract ↔ Game), rendering, time and window controls
+│   │   └── EngineBuildPreferences.hpp # Engine feature toggles (V8 scripting disabled)
+│   ├── Run/                           # Runtime directory
+│   │   ├── Data/Audio/                # Sound effects (TestSound.mp3)
+│   │   ├── Data/Config/               # Engine subsystem, log, and log rotation settings
+│   │   ├── Data/Fonts/                # Bitmap font (DaemonFont)
+│   │   └── Data/Shaders/              # HLSL shaders (Default)
+│   └── Protogame2D.sln                # Visual Studio solution
+├── LICENSE
+└── README.md
 ```
 
 ## License
 
-Copyright 2025 Yu-Wei Tseng
+Copyright 2026 Yu-Wei Tseng
 
-Licensed under the [Apache License, Version 2.0](../LICENSE).
+Licensed under the [Apache License, Version 2.0](LICENSE).
 
 ## Contact
 
 **Yu-Wei Tseng**
-- Portfolio: [dadavidtseng.info](https://dadavidtseng.info)
+- Portfolio: [dadavidtseng.com](https://dadavidtseng.com)
 - GitHub: [@dadavidtseng](https://github.com/dadavidtseng)
 - LinkedIn: [dadavidtseng](https://www.linkedin.com/in/dadavidtseng/)
 - Email: dadavidtseng@gmail.com
@@ -123,5 +129,5 @@ Licensed under the [Apache License, Version 2.0](../LICENSE).
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- REFERENCE-STYLE LINKS -->
-[license-shield]: https://img.shields.io/github/license/dadavidtseng/Protogame2D.svg?style=for-the-badge
-[license-url]: https://github.com/dadavidtseng/Protogame2D/blob/main/LICENSE
+[license-shield]: https://img.shields.io/github/license/daemon-engine/Protogame2D.svg?style=for-the-badge
+[license-url]: https://github.com/daemon-engine/Protogame2D/blob/main/LICENSE
