@@ -75,21 +75,6 @@
                     "threadCount": 4
                 }
             }
-        },
-        "script": {
-            "enabled": false,
-            "description": "Script subsystem using V8 JavaScript engine for dual-language game logic",
-            "config": {
-                "_note": "All script settings are ACTIVELY READ from this config (Engine.cpp lines 399-410)",
-                "enableDebugging": true,
-                "heapSizeLimit": 256,
-                "enableConsoleOutput": true,
-                "enableHotReload": true,
-                "enableInspector": true,
-                "inspectorPort": 9229,
-                "inspectorHost": "127.0.0.1",
-                "waitForDebugger": false
-            }
         }
     },
 
@@ -129,7 +114,7 @@
 
     "_examples": {
         "_configuration_status": {
-            "fully_configurable": ["script (8 settings)", "math (defaultSeed)", "platform/window (3 settings)"],
+            "fully_configurable": ["math (defaultSeed)", "platform/window (3 settings)"],
             "future_expansion": ["audio", "input"],
             "currently_hardcoded": ["renderer", "resource", "devConsole", "jobSystem"]
         },
@@ -139,8 +124,6 @@
       "disable_imgui": "Remove 'ImGuiSubsystem' from core.subsystems array (disables debug UI)",
         "headless_mode": "Remove 'Window' and 'Renderer' from core.subsystems array (experimental)",
         "custom_rng_seed": "Set subsystems.math.config.defaultSeed to a number (e.g., 12345) for deterministic randomness",
-        "disable_debugger": "Set subsystems.script.config.enableInspector to false",
-        "change_inspector_port": "Set subsystems.script.config.inspectorPort to desired port number",
         "fullscreen_mode": "Set subsystems.platform.config.windowType to 'FULLSCREEN_CROP' or 'FULLSCREEN_LETTERBOX'",
         "windowed_mode": "Set subsystems.platform.config.windowType to 'WINDOWED'",
         "change_window_title": "Set subsystems.platform.config.windowTitle to your desired title"
