@@ -41,6 +41,7 @@ Game::~Game()
 {
     DAEMON_LOG(LogGame, eLogVerbosity::Display, "(~Game)(start)");
 
+    GAME_SAFE_RELEASE(m_gameClock);
     GAME_SAFE_RELEASE(m_screenCamera);
 
     g_eventSystem->UnsubscribeEventCallbackFunction("OnGameStateChanged", OnGameStateChanged);
