@@ -53,7 +53,8 @@ private:
     //------------------------------------------------------------------------------------------------
     void UpdateGame();
     void UpdateTime() const;
-    void UpdateWindow() const;
+    void UpdateWindow();
+    void UpdateScreenCamera() const;
 
     //------------------------------------------------------------------------------------------------
     // Render

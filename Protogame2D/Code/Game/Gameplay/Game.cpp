@@ -24,12 +24,7 @@ Game::Game()
     g_eventSystem->SubscribeEventCallbackFunction("OnGameStateChanged", OnGameStateChanged);
 
     m_screenCamera = new Camera();
-
-    Vec2 const bottomLeft     = Vec2::ZERO;
-    Vec2 const screenTopRight = Window::s_mainWindow->GetClientDimensions();
-
-    m_screenCamera->SetOrthoGraphicView(bottomLeft, screenTopRight);
-    m_screenCamera->SetNormalizedViewport(AABB2::ZERO_TO_ONE);
+    UpdateScreenCamera();
 
     m_gameClock = new Clock(Clock::GetSystemClock());
 
@@ -202,16 +197,31 @@ void Game::UpdateTime() const
 }
 
 //----------------------------------------------------------------------------------------------------
-void Game::UpdateWindow() const
+/// @brief Toggle between windowed and fullscreen with R, in any game state.
+//----------------------------------------------------------------------------------------------------
+void Game::UpdateWindow()
 {
-    if (IsAttractState())
-    {
-        if (g_input->WasKeyJustPressed(KEYCODE_R))
-        {
-            Window::s_mainWindow->SetWindowType(eWindowType::FULLSCREEN_STRETCH);
-            Window::s_mainWindow->ReconfigureWindow();
-        }
-    }
+    if (!g_input->WasKeyJustPressed(KEYCODE_R)) return;
+
+    Window* const window     = Window::s_mainWindow;
+    bool const    isWindowed = window->GetConfig().m_windowType == eWindowType::WINDOWED;
+
+    // SetWindowType reconfigures the window itself.
+    window->SetWindowType(isWindowed ? eWindowType::FULLSCREEN_STRETCH : eWindowType::WINDOWED);
+
+    // The client size changed, so the screen camera must follow it.
+    UpdateScreenCamera();
+}
+
+//----------------------------------------------------------------------------------------------------
+/// @brief Fit the screen camera to the current client area (1 unit = 1 pixel).
+//----------------------------------------------------------------------------------------------------
+void Game::UpdateScreenCamera() const
+{
+    Vec2 const screenTopRight = Window::s_mainWindow->GetClientDimensions();
+
+    m_screenCamera->SetOrthoGraphicView(Vec2::ZERO, screenTopRight);
+    m_screenCamera->SetNormalizedViewport(AABB2::ZERO_TO_ONE);
 }
 
 //----------------------------------------------------------------------------------------------------
