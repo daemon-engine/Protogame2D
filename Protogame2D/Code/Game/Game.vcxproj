@@ -338,12 +338,13 @@
   <!-- //////////////////////////////////////////////////////////////////////////////////////////////// -->
   <!-- Documentation -->
   <!-- //////////////////////////////////////////////////////////////////////////////////////////////// -->
-  <ItemGroup>
-    <None Include="../../Docs/README.md" />
-  </ItemGroup>
   <!-- //////////////////////////////////////////////////////////////////////////////////////////////// -->
   <!-- MSBuild Target and Build Validation -->
   <!-- //////////////////////////////////////////////////////////////////////////////////////////////// -->
+  <ItemGroup>
+    <None Include="..\..\..\LICENSE" />
+    <None Include="..\..\..\README.md" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)/Microsoft.Cpp.targets" />
   <!-- Debugging: run the deployed executable from Run/ so Data/ assets resolve (all configurations).
        Defined after Microsoft.Cpp.targets, which otherwise resets LocalDebuggerCommand to $(TargetPath). -->
