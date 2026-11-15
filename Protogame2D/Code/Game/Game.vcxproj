@@ -56,6 +56,11 @@
     <EnableScriptModule Condition="'$(ScriptDisabled)'=='false'">true</EnableScriptModule>
     <EnableAudioModule Condition="'$(AudioDisabled)'=='true'">false</EnableAudioModule>
     <EnableAudioModule Condition="'$(AudioDisabled)'=='false'">true</EnableAudioModule>
+    <!-- OpenSSL is only used by KADI authentication, which is compiled only with scripting enabled -->
+    <OpenSslArch Condition="'$(Platform)'=='Win32'">x86</OpenSslArch>
+    <OpenSslArch Condition="'$(Platform)'=='x64'">x64</OpenSslArch>
+    <OpenSslLibDir Condition="'$(EnableScriptModule)'=='true'">$(SolutionDir)../Engine/Code/ThirdParty/openssl/lib/$(OpenSslArch)/$(Configuration);</OpenSslLibDir>
+    <OpenSslLibs Condition="'$(EnableScriptModule)'=='true'">libcrypto.lib;libssl.lib;</OpenSslLibs>
   </PropertyGroup>
   <!-- //////////////////////////////////////////////////////////////////////////////////////////////// -->
   <!-- Display Module Configuration at Build Time -->
@@ -154,15 +159,15 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Code/;$(SolutionDir)../Engine/Code/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Code/;$(SolutionDir)../Engine/Code/;$(SolutionDir)../Engine/Code/ThirdParty/openssl/lib/x86/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Code/;$(SolutionDir)../Engine/Code/;$(OpenSslLibDir)%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <!-- Windows API libraries required for game functionality -->
-      <!-- OpenSSL cryptography libraries (required for KADI authentication) -->
-      <AdditionalDependencies>libcrypto.lib;libssl.lib;winmm.lib;dbghelp.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <!-- OpenSSL cryptography libraries (only when scripting is enabled; see OpenSslLibs) -->
+      <AdditionalDependencies>$(OpenSslLibs)winmm.lib;dbghelp.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <!-- Complete application deployment: executable + optional V8 and FMOD runtime DLLs -->
     <PostBuildEvent Condition="'$(EnableScriptModule)'=='true' AND '$(EnableAudioModule)'=='true'">
@@ -201,10 +206,10 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Code/;$(SolutionDir)../Engine/Code/;$(SolutionDir)../Engine/Code/ThirdParty/openssl/lib/x86/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Code/;$(SolutionDir)../Engine/Code/;$(OpenSslLibDir)%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <!-- Windows API libraries required for game functionality -->
-      <!-- OpenSSL cryptography libraries (required for KADI authentication) -->
-      <AdditionalDependencies>libcrypto.lib;libssl.lib;winmm.lib;dbghelp.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <!-- OpenSSL cryptography libraries (only when scripting is enabled; see OpenSslLibs) -->
+      <AdditionalDependencies>$(OpenSslLibs)winmm.lib;dbghelp.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <!-- Complete application deployment: executable + optional V8 and FMOD runtime DLLs -->
     <PostBuildEvent Condition="'$(EnableScriptModule)'=='true' AND '$(EnableAudioModule)'=='true'">
@@ -239,10 +244,10 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Code/;$(SolutionDir)../Engine/Code/;$(SolutionDir)../Engine/Code/ThirdParty/openssl/lib/x64/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Code/;$(SolutionDir)../Engine/Code/;$(OpenSslLibDir)%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <!-- Windows API libraries required for game functionality -->
-      <!-- OpenSSL cryptography libraries (required for KADI authentication) -->
-      <AdditionalDependencies>libcrypto.lib;libssl.lib;winmm.lib;dbghelp.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <!-- OpenSSL cryptography libraries (only when scripting is enabled; see OpenSslLibs) -->
+      <AdditionalDependencies>$(OpenSslLibs)winmm.lib;dbghelp.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <!-- Complete application deployment: executable + optional V8 and FMOD runtime DLLs -->
     <PostBuildEvent Condition="'$(EnableScriptModule)'=='true' AND '$(EnableAudioModule)'=='true'">
@@ -281,10 +286,10 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Code/;$(SolutionDir)../Engine/Code/;$(SolutionDir)../Engine/Code/ThirdParty/openssl/lib/x64/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Code/;$(SolutionDir)../Engine/Code/;$(OpenSslLibDir)%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <!-- Windows API libraries required for game functionality -->
-      <!-- OpenSSL cryptography libraries (required for KADI authentication) -->
-      <AdditionalDependencies>libcrypto.lib;libssl.lib;winmm.lib;dbghelp.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <!-- OpenSSL cryptography libraries (only when scripting is enabled; see OpenSslLibs) -->
+      <AdditionalDependencies>$(OpenSslLibs)winmm.lib;dbghelp.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <!-- Complete application deployment: executable + optional V8 and FMOD runtime DLLs -->
     <PostBuildEvent Condition="'$(EnableScriptModule)'=='true' AND '$(EnableAudioModule)'=='true'">
@@ -318,7 +323,6 @@
   <!-- //////////////////////////////////////////////////////////////////////////////////////////////// -->
   <ItemGroup>
     <ClCompile Include="Framework/App.cpp" />
-    <ClCompile Include="Framework/GameCommon.cpp" />
     <ClCompile Include="Framework/Main_Windows.cpp" />
     <ClCompile Include="Gameplay/Game.cpp" />
   </ItemGroup>

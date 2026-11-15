@@ -94,7 +94,7 @@ Protogame2D/
 │   ├── Framework/                 # Application framework
 │   │   ├── Main_Windows.cpp       # WinMain entry point
 │   │   ├── App                    # Application lifecycle (Startup → RunMainLoop → Shutdown)
-│   │   └── GameCommon             # Global pointers, debug draw helpers, GAME_SAFE_RELEASE
+│   │   └── GameCommon             # Global pointers, GAME_SAFE_RELEASE
 │   ├── Gameplay/                  # Game logic
 │   │   └── Game                   # State machine (Attract ↔ Game), rendering, time controls
 │   └── EngineBuildPreferences.hpp # Engine feature toggles (V8 scripting disabled)
